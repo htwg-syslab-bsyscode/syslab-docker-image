@@ -84,6 +84,10 @@ RUN set -eux; \
     rustup --version; \
     cargo --version; \
     rustc --version;
+RUN echo "PATH=$PATH" > /etc/environment
+RUN echo "RUSTUP_HOME=$RUSTUP_HOME" >> /etc/environment
+RUN echo "CARGO_HOME=$CARGO_HOME" >> /etc/environment
+RUN echo "RUST_VERSION=$RUST_VERSION" >> /etc/environment
 
 # set timezone to Europe/Berlin
 RUN apt update && apt install tzdata -y
