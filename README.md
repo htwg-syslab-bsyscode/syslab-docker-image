@@ -8,12 +8,12 @@ Install [Ubuntu](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview)
 ```
 # base image
 cd base
-docker build --tag syslab:base .
+docker build --tag bsys:base .
 cd -
 
 # ui image
 cd ui
-docker build --tag syslab:ui .
+docker build --tag bsys:ui .
 cd -
 ```
 

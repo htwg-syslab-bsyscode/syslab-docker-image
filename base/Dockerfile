@@ -40,6 +40,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
      	python3-matplotlib \
      	python-tk \
      	gpg dirmngr gnupg \ 
+	build-essential \
+	qemu-system libcurses-ocaml-dev zlib1g-dev libc6-dev-arm64-cross gcc-aarch64-linux-gnu gdb-multiarch \
 	curl gnupg lsb-release 
 
 # install firefox
@@ -62,6 +64,26 @@ RUN wget "$atom_source"
 RUN dpkg -i *deb && rm *deb
 RUN mkdir -p /home/syslab/.local/share/applications/
 COPY synchronize/atom.desktop /home/syslab/.local/share/applications/
+
+# install rust
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH \
+    RUST_VERSION=1.62.1
+RUN set -x && \
+    apt-get update --fix-missing && \
+    apt-get install -y --no-install-recommends \
+    cmake
+RUN set -eux; \
+    url="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"; \
+    wget "$url"; \
+    chmod +x rustup-init; \
+    ./rustup-init -y --no-modify-path --default-toolchain $RUST_VERSION; \
+    rm rustup-init; \
+    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
+    rustup --version; \
+    cargo --version; \
+    rustc --version;
 
 # set timezone to Europe/Berlin
 RUN apt update && apt install tzdata -y
