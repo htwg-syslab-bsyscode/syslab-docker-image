@@ -1,5 +1,6 @@
 FROM syslab:base
 
+# changes here are not supported just jet
 ARG iUSER="syslab"
 ARG iPW="syslab"
 

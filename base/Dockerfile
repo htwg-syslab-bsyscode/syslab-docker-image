@@ -60,6 +60,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y code
 # install atom
 RUN wget "$atom_source"
 RUN dpkg -i *deb && rm *deb
+RUN mkdir -p /home/syslab/.local/share/applications/
+COPY synchronize/atom.desktop /home/syslab/.local/share/applications/
 
 # set timezone to Europe/Berlin
 RUN apt update && apt install tzdata -y
