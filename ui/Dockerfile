@@ -70,5 +70,6 @@ RUN echo "CHROMIUM_FLAGS='--no-sandbox --disable-dev-shm-usage --start-maximized
 #---------------------------------------------------------------------
 COPY launch.sh /opt/noVNC/utils/launch.sh
 COPY start_desktop.sh /usr/local/bin/start_desktop.sh
+COPY bashrc /home/$iUSER/.bashrc
 
 CMD /usr/local/bin/start_desktop.sh
