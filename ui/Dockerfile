@@ -21,12 +21,10 @@ RUN mkdir /run/sshd
 #---------------------------------------------------------------------
 # Install VirtualGL and TurboVNC
 #---------------------------------------------------------------------
-RUN apt-get update && apt-get install -y libxtst6:i386
+RUN apt-get update && apt-get install -y libxtst6
 RUN cd /tmp && \
     curl -fsSL -O "https://sourceforge.net/projects/turbovnc/files/3.0/turbovnc_3.0_arm64.deb" \
-    -O "https://sourceforge.net/projects/libjpeg-turbo/files/2.1.3/libjpeg-turbo-official_2.1.3_arm64.deb" \
-    -O "https://sourceforge.net/projects/virtualgl/files/3.0.1/virtualgl_3.0.1_arm64.deb" \
-    -O "https://sourceforge.net/projects/virtualgl/files/3.0.1/virtualgl32_3.0.1_arm64.deb" && \
+    -O "https://sourceforge.net/projects/libjpeg-turbo/files/2.1.3/libjpeg-turbo-official_2.1.3_arm64.deb" && \
     dpkg -i *.deb && \
     rm -f /tmp/*.deb && \
     sed -i 's/$host:/unix:/g' /opt/TurboVNC/bin/vncserver
@@ -51,7 +49,7 @@ RUN adduser $iUSER
 RUN usermod -aG sudo $iUSER
 RUN usermod --password $iPW $iUSER
 RUN usermod -s /bin/bash $iUSER
-RUN sudo -u syslab -H bash -c "source /etc/environment;rustup default stable"
+# RUN sudo -u syslab -H bash -c "source /etc/environment;rustup default stable"
 RUN openssl req -subj '/C=DE/ST=KN/L=KN/O=Dis/CN=unvalid.kk' -x509 -nodes -days 358000 -newkey rsa:2048 -keyout /home/$iUSER/.self.pem -out /home/$iUSER/.self.pem
 
 #---------------------------------------------------------------------
