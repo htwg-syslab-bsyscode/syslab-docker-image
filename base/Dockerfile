@@ -3,6 +3,11 @@ FROM ubuntu:22.04
 # args
 ARG atom_source="https://github.com/atom/atom/releases/download/v1.60.0/atom-amd64.deb"
 ARG sublime_source="https://download.sublimetext.com/Sublime%20Text%202.0.2%20x64.tar.bz2"
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH \
+    RUST_VERSION=1.62.1 \
+    TZ=Europe/Berlin
 
 # install software
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -66,10 +71,6 @@ RUN mkdir -p /home/syslab/.local/share/applications/
 COPY synchronize/atom.desktop /home/syslab/.local/share/applications/
 
 # install rust
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH \
-    RUST_VERSION=1.62.1
 RUN set -x && \
     apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
@@ -84,14 +85,16 @@ RUN set -eux; \
     rustup --version; \
     cargo --version; \
     rustc --version;
+
+# set timezone to Europe/Berlin
+RUN apt update && apt install tzdata -y
+
+# env
 RUN echo "PATH=$PATH" > /etc/environment
 RUN echo "RUSTUP_HOME=$RUSTUP_HOME" >> /etc/environment
 RUN echo "CARGO_HOME=$CARGO_HOME" >> /etc/environment
 RUN echo "RUST_VERSION=$RUST_VERSION" >> /etc/environment
-
-# set timezone to Europe/Berlin
-RUN apt update && apt install tzdata -y
-ENV TZ="Europe/Berlin"
+RUN echo "TZ=$TZ" >> /etc/environment
 
 # set locale / env
 RUN locale-gen de_DE de_DE.UTF-8
