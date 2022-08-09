@@ -7,13 +7,12 @@ ARG iPW="syslab"
 #---------------------------------------------------------------------
 # Install Linux stuff
 #---------------------------------------------------------------------
-RUN dpkg --add-architecture i386
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ca-certificates curl wget less sudo lsof git net-tools psmisc xz-utils nemo vim net-tools iputils-ping traceroute htop bmon tmux sudo geany openssh-server \
     xubuntu-desktop xterm zenity make cmake gcc libc6-dev dbus-x11 chromium-browser\
     x11-xkb-utils xauth xfonts-base xkb-data \
     mesa-utils xvfb libgl1-mesa-dri libgl1-mesa-glx libglib2.0-0 libxext6 libsm6 libxrender1 \
-    libglu1 libglu1:i386 libxv1 libxv1:i386 libegl1-mesa:i386 libegl1-mesa\
+    libglu1 libxv1 libegl1-mesa\
     python2 libpython-all-dev libsuitesparse-dev libgtest-dev openssl \
     libeigen3-dev libsdl1.2-dev libsdl-image1.2-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -24,10 +23,10 @@ RUN mkdir /run/sshd
 #---------------------------------------------------------------------
 RUN apt-get update && apt-get install -y libxtst6:i386
 RUN cd /tmp && \
-    curl -fsSL -O "https://sourceforge.net/projects/turbovnc/files/3.0/turbovnc_3.0_amd64.deb" \
-    -O "https://sourceforge.net/projects/libjpeg-turbo/files/2.1.3/libjpeg-turbo-official_2.1.3_amd64.deb" \
-    -O "https://sourceforge.net/projects/virtualgl/files/3.0.1/virtualgl_3.0.1_amd64.deb" \
-    -O "https://sourceforge.net/projects/virtualgl/files/3.0.1/virtualgl32_3.0.1_amd64.deb" && \
+    curl -fsSL -O "https://sourceforge.net/projects/turbovnc/files/3.0/turbovnc_3.0_arm64.deb" \
+    -O "https://sourceforge.net/projects/libjpeg-turbo/files/2.1.3/libjpeg-turbo-official_2.1.3_arm64.deb" \
+    -O "https://sourceforge.net/projects/virtualgl/files/3.0.1/virtualgl_3.0.1_arm64.deb" \
+    -O "https://sourceforge.net/projects/virtualgl/files/3.0.1/virtualgl32_3.0.1_arm64.deb" && \
     dpkg -i *.deb && \
     rm -f /tmp/*.deb && \
     sed -i 's/$host:/unix:/g' /opt/TurboVNC/bin/vncserver

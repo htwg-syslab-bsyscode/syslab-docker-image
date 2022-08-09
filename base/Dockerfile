@@ -1,13 +1,7 @@
 FROM ubuntu:22.04
 
 # args
-ARG atom_source="https://github.com/atom/atom/releases/download/v1.60.0/atom-amd64.deb"
-ARG sublime_source="https://download.sublimetext.com/Sublime%20Text%202.0.2%20x64.tar.bz2"
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH \
-    RUST_VERSION=1.62.1 \
-    TZ=Europe/Berlin
+ENV TZ=Europe/Berlin
 
 # install software
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -62,39 +56,14 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sublime-
 
 # install vscode
 RUN wget -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /usr/share/keyrings/vscode.gpg
-RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main" | tee /etc/apt/sources.list.d/vscode.list
+RUN echo "deb [arch=arm64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main" | tee /etc/apt/sources.list.d/vscode.list
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y code
-
-# install atom
-RUN wget "$atom_source"
-RUN dpkg -i *deb && rm *deb
-RUN mkdir -p /home/syslab/.local/share/applications/
-COPY synchronize/atom.desktop /home/syslab/.local/share/applications/
-
-# install rust
-RUN set -x && \
-    apt-get update --fix-missing && \
-    apt-get install -y --no-install-recommends \
-    cmake
-RUN set -eux; \
-    url="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"; \
-    wget "$url"; \
-    chmod +x rustup-init; \
-    ./rustup-init -y --no-modify-path --default-toolchain $RUST_VERSION; \
-    rm rustup-init; \
-    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
-    rustup --version; \
-    cargo --version; \
-    rustc --version;
 
 # set timezone to Europe/Berlin
 RUN apt update && apt install tzdata -y
 
 # env
 RUN echo "PATH=$PATH" > /etc/environment
-RUN echo "RUSTUP_HOME=$RUSTUP_HOME" >> /etc/environment
-RUN echo "CARGO_HOME=$CARGO_HOME" >> /etc/environment
-RUN echo "RUST_VERSION=$RUST_VERSION" >> /etc/environment
 RUN echo "TZ=$TZ" >> /etc/environment
 
 # set locale / env
