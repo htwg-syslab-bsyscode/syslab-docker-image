@@ -74,6 +74,13 @@ RUN chown -R $iUSER.$iUSER /home/$iUSER
 RUN echo $iUSER:$iPW | chpasswd
 RUN echo "CHROMIUM_FLAGS='--no-sandbox --disable-dev-shm-usage --start-maximized --user-data-dir'" > /home/$iUSER/.chromium-browser.init
 
+
+#---------------------------------------------------------------------
+# Configure BSYS
+#---------------------------------------------------------------------
+RUN git clone https://github.com/remzi-arpacidusseau/ostep-homework.git /home/$iUSER/ostep-homework
+RUN chown -R $iUSER.$iUSER /home/$iUSER/ostep-homework
+
 #---------------------------------------------------------------------
 # Startup
 #---------------------------------------------------------------------
