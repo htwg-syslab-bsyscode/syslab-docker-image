@@ -55,6 +55,7 @@ RUN openssl req -subj '/C=DE/ST=KN/L=KN/O=Dis/CN=unvalid.kk' -x509 -nodes -days 
 #---------------------------------------------------------------------
 # Install desktop files for this user
 #---------------------------------------------------------------------
+RUN mkdir -p /home/$iUSER/.vscode-server
 RUN mkdir -p /home/$iUSER/.vnc
 COPY xstartup.turbovnc /home/$iUSER/.vnc/xstartup.turbovnc
 RUN chmod a+x /home/$iUSER/.vnc/xstartup*
