@@ -49,7 +49,7 @@ RUN adduser $iUSER
 RUN usermod -aG sudo $iUSER
 RUN usermod --password $iPW $iUSER
 RUN usermod -s /bin/bash $iUSER
-# RUN sudo -u syslab -H bash -c "source /etc/environment;rustup default stable"
+RUN sudo -u syslab -H bash -c "source /etc/environment;rustup default stable"
 RUN openssl req -subj '/C=DE/ST=KN/L=KN/O=Dis/CN=unvalid.kk' -x509 -nodes -days 358000 -newkey rsa:2048 -keyout /home/$iUSER/.self.pem -out /home/$iUSER/.self.pem
 
 #---------------------------------------------------------------------
