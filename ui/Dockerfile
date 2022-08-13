@@ -88,8 +88,9 @@ RUN chown -R $iUSER.$iUSER /home/$iUSER/ostep-homework
 RUN sudo -u syslab -H bash -c "source /etc/environment;cargo install itm"
 RUN sudo -u syslab -H bash -c "source /etc/environment;rustup component add llvm-tools-preview"
 RUN sudo -u syslab -H bash -c "source /etc/environment;cargo install cargo-binutils"
+RUN sudo -u syslab -H bash -c "source /etc/environment;rustup target add thumbv7em-none-eabihf"
 RUN sudo -u syslab -H bash -c "source /etc/environment;cd;cargo new test-size;cd test-size;cargo run"
-
+RUN sudo -u syslab -H bash -c "source /etc/environment;cd;git clone https://github.com/rust-embedded/discovery.git"
 
 
 #---------------------------------------------------------------------
