@@ -82,6 +82,17 @@ RUN git clone https://github.com/remzi-arpacidusseau/ostep-homework.git /home/$i
 RUN chown -R $iUSER.$iUSER /home/$iUSER/ostep-homework
 
 #---------------------------------------------------------------------
+# Configure ESYS
+#---------------------------------------------------------------------
+
+RUN sudo -u syslab -H bash -c "source /etc/environment;cargo install itm"
+RUN sudo -u syslab -H bash -c "source /etc/environment;rustup component add llvm-tools-preview"
+RUN sudo -u syslab -H bash -c "source /etc/environment;cargo install cargo-binutils"
+RUN sudo -u syslab -H bash -c "source /etc/environment;cd;cargo new test-size;cd test-size;cargo run"
+
+
+
+#---------------------------------------------------------------------
 # Startup
 #---------------------------------------------------------------------
 COPY launch.sh /opt/noVNC/utils/launch.sh
