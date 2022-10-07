@@ -60,8 +60,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sublime-
 
 # install vscode
 RUN wget -O- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /usr/share/keyrings/vscode.gpg
-#RUN echo "deb [arch=arm64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main" | tee /etc/apt/sources.list.d/vscode.list
-#RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y code
+RUN echo "deb [arch=arm64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/code stable main" | tee /etc/apt/sources.list.d/vscode.list
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y code
 
 # install rust
 RUN set -x && \
