@@ -87,6 +87,52 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
+# install gdbgui
+RUN pip3 install gdbgui
+
+#install opencv
+RUN apt-get update && apt-get install -y \
+	build-essential \
+	git \
+	pkg-config \
+	cmake \
+	libgtk2.0-dev \
+	libavcodec-dev \
+	libavformat-dev \
+	libswscale-dev \
+	python3-dev \
+	python3-numpy \
+	libtbb2 \
+	libtbb-dev \
+	libjpeg-dev \
+	libpng-dev \
+	libtiff-dev \
+	qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools \
+	qtcreator \
+	llvm \
+	clang \
+	libclang-dev \
+	libdc1394-dev
+
+RUN mkdir -p /git
+RUN cd /git && git clone --single-branch  --branch 4.6.0 https://github.com/opencv/opencv.git
+RUN mkdir -p /git/opencv/build
+WORKDIR /git/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+	-D INSTALL_C_EXAMPLES=OFF \
+	-D INSTALL_PYTHON_EXAMPLES=OFF \
+	-D WITH_TBB=ON \
+	-D WITH_QT=ON \
+	-D WITH_OPENGL=ON \
+	-D BUILD_EXAMPLES=OFF \
+	-D BUILD_TIFF=ON \
+	-D OPENCV_GENERATE_PKGCONFIG=ON \
+	..
+
+RUN make -j8
+RUN make install
+RUN ldconfig
+
 # set timezone to Europe/Berlin
 RUN apt update && apt install tzdata -y
 

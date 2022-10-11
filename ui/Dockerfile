@@ -1,4 +1,4 @@
-FROM bsys:base
+FROM paco:base
 
 # changes here are not supported just jet
 ARG iUSER="syslab"
